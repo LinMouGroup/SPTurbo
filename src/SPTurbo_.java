@@ -1,58 +1,104 @@
 import java.io.File;
-import ij.IJ;
 import ij.ImageJ;
+
 import ij.plugin.PlugIn;
 import ij.ImagePlus;
-import ij.gui.GenericDialog;
-import ij.process.FloatProcessor;
+import ij.process.ByteProcessor;
+import ij.gui.ImageCanvas;
+import ij.gui.ImageWindow;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SPTurbo_ implements PlugIn {
+
+    private JFrame frame;
+    private ImagePlus previewImp;
+    private JLabel previewLabel;
+
     public static void main(String[] args) {
         new ImageJ();
         new SPTurbo_().run("");
     }
 
-    @Override
     public void run(String arg) {
+        // 创建独立窗口
+        frame = new JFrame("噪声图像生成器");
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setLayout(new BorderLayout(10, 10));
 
-       // 1. 创建UI对话框，收集参数
-        GenericDialog gd = new GenericDialog("SPTurbo");
-        gd.addNumericField("Width (pixels):", 512, 0);
-        gd.addNumericField("Height (pixels):", 512, 0);
-        gd.addNumericField("Frequency (cycles/pixel):", 0.02, 3);
-        gd.addNumericField("Amplitude (gray value):", 100, 0);
-        gd.addCheckbox("Show result", true);
+        // 控件区
+        JPanel controlPanel = new JPanel(new GridLayout(3, 2, 5, 5));
+        controlPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        gd.showDialog();
-        if (gd.wasCanceled()) return;
+        controlPanel.add(new JLabel("宽度:"));
+        JTextField widthField = new JTextField("256");
+        controlPanel.add(widthField);
 
-        // 2. 读取用户输入
-        int width = (int) gd.getNextNumber();
-        int height = (int) gd.getNextNumber();
-        double frequency = gd.getNextNumber();
-        double amplitude = gd.getNextNumber();
-        boolean showResult = gd.getNextBoolean();
+        controlPanel.add(new JLabel("高度:"));
+        JTextField heightField = new JTextField("256");
+        controlPanel.add(heightField);
 
-        // 3. 程序化生成图像数据（完全无依赖）
-        float[] pixels = new float[width * height];
-        for (int y = 0; y < height; y++) {
-            for (int x = 0; x < width; x++) {
-                double value = amplitude * Math.sin(2 * Math.PI * frequency * x);
-                pixels[y * width + x] = (float) value;
+        JButton generateBtn = new JButton("生成随机噪声");
+        controlPanel.add(generateBtn);
+
+        JButton showBtn = new JButton("在ImageJ中打开");
+        controlPanel.add(showBtn);
+
+        frame.add(controlPanel, BorderLayout.NORTH);
+
+        // 预览区（显示缩略图）
+        previewLabel = new JLabel("预览区域", SwingConstants.CENTER);
+        previewLabel.setPreferredSize(new Dimension(256, 256));
+        previewLabel.setBorder(BorderFactory.createEtchedBorder());
+        frame.add(previewLabel, BorderLayout.CENTER);
+
+        // 生成按钮事件
+        generateBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int w = Integer.parseInt(widthField.getText());
+                int h = Integer.parseInt(heightField.getText());
+                generateNoiseImage(w, h);
             }
+        });
+
+        // "在ImageJ中打开"按钮事件
+        showBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (previewImp != null) {
+                    // 复制一份新图像在ImageJ主窗口中打开
+                    ImagePlus copy = previewImp.duplicate();
+                    copy.setTitle("噪声图_" + System.currentTimeMillis());
+                    copy.show();
+                }
+            }
+        });
+
+        frame.pack();
+        frame.setLocationRelativeTo(null); // 居中
+        frame.setVisible(true);
+    }
+
+    private void generateNoiseImage(int width, int height) {
+        // 生成随机噪声
+        byte[] pixels = new byte[width * height];
+        for (int i = 0; i < pixels.length; i++) {
+            pixels[i] = (byte) (Math.random() * 256);
         }
 
-        // 4. 创建ImagePlus对象并显示
-        FloatProcessor fp = new FloatProcessor(width, height, pixels);
-        ImagePlus imp = new ImagePlus("Results", fp);
+        ByteProcessor bp = new ByteProcessor(width, height, pixels);
+        previewImp = new ImagePlus("预览", bp);
 
-        if (showResult) {
-            imp.show(); // 这会在ImageJ中打开一个新窗口
-        } else {
-            String path = System.getProperty("user.home") + File.separator + "Desktop" + File.separator + "SPTurbo_result.tif";
-            IJ.save(imp, path);
-            IJ.log("Saving to: " + path);
-            IJ.log("File saved, window not shown.");
+        // 缩放到预览区域大小显示（使用ImageJ自带的缩略图功能）
+        ImagePlus scaled = previewImp.resize(previewLabel.getWidth(), previewLabel.getHeight(), "bilinear");
+        if (scaled != null) {
+            ImageIcon icon = new ImageIcon(scaled.getImage());
+            previewLabel.setIcon(icon);
+            previewLabel.setText(""); // 清除文字
         }
     }
 }
