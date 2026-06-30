@@ -1,4 +1,4 @@
-# 项目：st
+# 项目：SPTurbo
 
 简要说明：这是一个小型 Java 插件项目示例，包含源码位于 `src/`，编译产物位于 `build/classes/`，并带有启动脚本 `run.bat`。
 
