@@ -7,7 +7,8 @@
 - `src/` — 源代码（示例：`My_Plugin.java`）
 - `lib/` — 项目依赖库
 - `build/classes/` — 编译输出
-- `run.bat` — 启动脚本
+- `run.bat` — Windows 启动脚本
+- `run.sh` — macOS/Linux 启动脚本
 
 ## 快速开始
 
@@ -15,15 +16,26 @@
 2. 使用命令行进入项目根目录。
 3. 如果需要编译（示例使用 `javac`）：
 
-```powershell
-javac -d build/classes -cp "lib/*" src\*.java
+```bash
+javac -d build/classes -cp "lib/*" src/*.java
 ```
 
-4. 运行项目（Windows）：
+4. 运行项目：
+
+Windows:
 
 ```powershell
 .\run.bat
 ```
+
+macOS / Linux:
+
+```bash
+chmod +x ./run.sh
+./run.sh
+```
+
+> 注意：本项目运行时需要 JDK 8，因为 `ij.jar` 依赖旧版 `java.applet.Applet` 类，该类在 Java 11 及以后版本中已被移除。
 
 ## 构建与运行
 
