@@ -1,6 +1,8 @@
+package com.spturbo;
+
 import ij.plugin.PlugIn;
 import javax.swing.*;
-import GUI.SPTLayout;
+import com.spturbo.gui.SPTLayout;
 
 public class SPTurbo_ implements PlugIn {
 

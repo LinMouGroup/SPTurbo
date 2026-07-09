@@ -1,26 +1,25 @@
 # 项目：SPTurbo
 
-简要说明：这是一个小型 Java 插件项目示例，包含源码位于 `src/`，编译产物位于 `build/classes/`，并带有启动脚本 `run.bat`。
+简要说明：这是一个小型 Java 插件项目，已迁移到 Maven 标准目录结构，源码位于 `src/main/java`，依赖库位于 `lib/`。
 
 ## 目录结构
 
-- `src/` — 源代码（示例：`My_Plugin.java`）
-- `lib/` — 项目依赖库
-- `build/classes/` — 编译输出
-- `run.bat` — Windows 启动脚本
-- `run.sh` — macOS/Linux 启动脚本
+- `src/main/java/` — Java 源代码
+- `lib/` — 本地依赖库（`ij.jar`）
+- `target/` — Maven 构建输出
+- `pom.xml` — Maven 项目描述文件
+- `run.bat` — Windows 运行脚本
+- `run.sh` — macOS/Linux 运行脚本
 
 ## 快速开始
 
 1. 克隆或下载仓库到本地。
 2. 使用命令行进入项目根目录。
-3. 如果需要编译（示例使用 `javac`）：
+3. 使用 Maven 编译并运行：
 
 ```bash
-javac -d build/classes -cp "lib/*" src/*.java
+./run.sh
 ```
-
-4. 运行项目：
 
 Windows:
 
@@ -28,19 +27,23 @@ Windows:
 .\run.bat
 ```
 
-macOS / Linux:
-
-```bash
-chmod +x ./run.sh
-./run.sh
-```
-
-> 注意：本项目运行时需要 JDK 8，因为 `ij.jar` 依赖旧版 `java.applet.Applet` 类，该类在 Java 11 及以后版本中已被移除。
-
 ## 构建与运行
 
-- 若使用 IDE（如 IntelliJ IDEA 或 VS Code），请将 `src/` 添加为源代码目录，`lib/` 添加到类路径。
-- 可按需修改 `run.bat` 以传入运行参数或设置 classpath。
+- 通过 Maven 编译：
+
+```bash
+mvn compile
+```
+
+- 通过 Maven 运行：
+
+```bash
+mvn exec:java
+```
+
+- 若使用 IDE（如 IntelliJ IDEA 或 VS Code），请将 `pom.xml` 导入为 Maven 项目。
+
+> 注意：本项目使用 JDK 8 编译，因为 `ij.jar` 依赖旧版 Java API。
 
 ## 贡献
 

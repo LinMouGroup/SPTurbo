@@ -1,6 +1,7 @@
 # 编译产物
 out/
 *.class
+target/
 
 # IDE配置（如果你用IDEA）
 .idea/
