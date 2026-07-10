@@ -1,11 +1,11 @@
 # 项目：SPTurbo
 
-简要说明：这是一个小型 Java 插件项目，已迁移到 Maven 标准目录结构，源码位于 `src/main/java`，依赖库位于 `lib/`。
+SPTurbo 是一个基于 Maven 标准目录结构的小型 Java 项目，主要源码位于 `src/main/java`，构建结果输出到 `target/`。
 
 ## 目录结构
 
 - `src/main/java/` — Java 源代码
-- `lib/` — 本地依赖库（`ij.jar`）
+- `src/test/java/` — 测试源码（如果有）
 - `target/` — Maven 构建输出
 - `pom.xml` — Maven 项目描述文件
 - `run.bat` — Windows 运行脚本
@@ -15,7 +15,21 @@
 
 1. 克隆或下载仓库到本地。
 2. 使用命令行进入项目根目录。
-3. 使用 Maven 编译并运行：
+3. 使用 Maven 编译项目：
+
+```bash
+mvn compile
+```
+
+4. 运行项目：
+
+```bash
+mvn exec:java
+```
+
+或者使用项目内脚本：
+
+macOS/Linux:
 
 ```bash
 ./run.sh
@@ -27,23 +41,14 @@ Windows:
 .\run.bat
 ```
 
-## 构建与运行
+## 依赖与环境
 
-- 通过 Maven 编译：
+- 使用 JDK 8 编译和运行
+- 依赖在 `pom.xml` 中声明，Maven 会自动下载 `ij` 等库
 
-```bash
-mvn compile
-```
+## IDE 使用
 
-- 通过 Maven 运行：
-
-```bash
-mvn exec:java
-```
-
-- 若使用 IDE（如 IntelliJ IDEA 或 VS Code），请将 `pom.xml` 导入为 Maven 项目。
-
-> 注意：本项目使用 JDK 8 编译，因为 `ij.jar` 依赖旧版 Java API。
+将 `pom.xml` 导入到 IntelliJ IDEA、Eclipse、VS Code 等 IDE 中，即可直接构建和运行。
 
 ## 贡献
 
@@ -51,4 +56,4 @@ mvn exec:java
 
 ## 许可证
 
-本项目未指定许可证。若打算公开，请添加合适的许可证文件（例如 `LICENSE`）。
+本项目当前未指定许可证。若计划公开发布，请添加合适的 `LICENSE` 文件。
