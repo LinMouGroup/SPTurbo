@@ -23,6 +23,8 @@
             <groupId>net.imagej</groupId>
             <artifactId>ij</artifactId>
             <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/ij.jar</systemPath>
         </dependency>
     </dependencies>
 
