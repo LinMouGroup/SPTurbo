@@ -1,16 +1,18 @@
 package com.spturbo.gui;
 
-import javax.swing.*;
-import javax.swing.border.TitledBorder;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
 
-public class SPTLayout extends JFrame {
-    public SPTLayout() {
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+
+public class SPTFrame extends JFrame {
+    public SPTFrame() {
         JPanel panelCanvas = new JPanel(new GridLayout(1,5));
 
-        JPanel panelSimulatedData = new JPanel(new GridLayout(1,5));
-        TitledBorder titleSimulatedData = BorderFactory.createTitledBorder("Simulated Data");
-        panelSimulatedData.setBorder(titleSimulatedData);
+        JPanel panelSimulatedData = new SimulatedDataPanel();
 
         JPanel panelDenoise = new JPanel(new GridLayout(1,5));
         TitledBorder titleDenoise = BorderFactory.createTitledBorder("Denoise");
@@ -35,5 +37,5 @@ public class SPTLayout extends JFrame {
         panelCanvas.add(panelAnalysis);
 
         add(panelCanvas, BorderLayout.CENTER);
-    } 
+    }
 }

@@ -1,8 +1,10 @@
 package com.spturbo;
 
+import javax.swing.JFrame;
+
+import com.spturbo.gui.SPTFrame;
+
 import ij.plugin.PlugIn;
-import javax.swing.*;
-import com.spturbo.gui.SPTLayout;
 
 public class SPTurbo_ implements PlugIn {
 
@@ -12,7 +14,7 @@ public class SPTurbo_ implements PlugIn {
     }
 
     public void run(String arg) {
-        JFrame frame = new SPTLayout();
+        JFrame frame = new SPTFrame();
         frame.setTitle("SPTurbo");
         frame.setSize(1000, 300);
         frame.setLocationRelativeTo(null); // 居中
